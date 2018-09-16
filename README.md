@@ -1,1 +1,1 @@
-This is a readme
+#A simple React click game
