@@ -10,7 +10,9 @@ class App extends Component {
   state = {
     friends,
     score: 0,
-    topScore: 0
+    topScore: 0,
+    pastClickId: "",
+    animateClass: "wrapper"
   };
 
   // removeFriend = id => {
@@ -20,18 +22,7 @@ class App extends Component {
   //   this.setState({ friends });
   // };
 
-  shuffleCard = array => {
-    for (var i = array.length - 1; i > 0; i--) {
-      var j = Math.floor(Math.random() * (i + 1));
-      var temp = array[i];
-      array[i] = array[j];
-      array[j] = temp;
-    }
-    return array;
-    // this.setState({ array });
-  };
-
-  shuffleMix = () => {
+  shuffleMix = friend => {
     const array = this.state.friends;
     for (var i = array.length - 1; i > 0; i--) {
       var j = Math.floor(Math.random() * (i + 1));
@@ -39,14 +30,36 @@ class App extends Component {
       array[i] = array[j];
       array[j] = temp;
     }
+    let animateClass = "wrapper";
+    this.setState({ animateClass });
+    const pastClickId = friend.id;
     this.setState({ array });
+    this.setState({ pastClickId });
+    if (friend.id !== this.state.pastClickId) {
+      let score = this.state.score + 1;
+      this.setState({ score });
+    } else {
+      console.log("game over");
+      let animateClass = "wrapper animated shake";
+      this.setState({ animateClass });
+      if (this.state.score > this.state.topScore) {
+        let topScore = this.state.score;
+        this.setState({ topScore });
+      }
+
+      let score = 0;
+      this.setState({ score });
+    }
   };
 
-  // Map over this.state.friends and render a FriendCard component for each friend object
   render() {
     return (
-      <Wrapper>
-        <Title score={this.state.score} topscore={this.state.topScore}>
+      <Wrapper animateClass={this.state.animateClass}>
+        <Title
+          score={this.state.score}
+          topscore={this.state.topScore}
+          pastClickId={this.state.pastClickId}
+        >
           Clicky Game
         </Title>
         {/* {this.shuffleArray(this.state.friends)} */}
