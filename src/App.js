@@ -11,7 +11,7 @@ class App extends Component {
     friends,
     score: 0,
     topScore: 0,
-    pastClickId: "",
+    pastClickId: [],
     animateClass: "wrapper"
   };
 
@@ -22,6 +22,31 @@ class App extends Component {
   //   this.setState({ friends });
   // };
 
+  trackClicks = id => {
+    const pastClickId = [...this.state.pastClickId];
+    pastClickId.push(id);
+    this.setState({ pastClickId });
+    console.log("in track click func: " + this.state.pastClickId);
+    const check = this.state.pastClickId.indexOf(id);
+    console.log(check);
+    if (check >= 0) {
+      console.log("game over");
+      let animateClass = "wrapper animated shake";
+      this.setState({ animateClass });
+      if (this.state.score > this.state.topScore) {
+        let topScore = this.state.score;
+        this.setState({ topScore });
+      }
+      let score = 0;
+      this.setState({ score });
+      let pastClickId = [];
+      this.setState({ pastClickId });
+    } else {
+      let score = this.state.score + 1;
+      this.setState({ score });
+    }
+  };
+
   shuffleMix = friend => {
     const array = this.state.friends;
     for (var i = array.length - 1; i > 0; i--) {
@@ -30,36 +55,49 @@ class App extends Component {
       array[i] = array[j];
       array[j] = temp;
     }
+    this.setState({ array });
+
     let animateClass = "wrapper";
     this.setState({ animateClass });
-    const pastClickId = friend.id;
-    this.setState({ array });
-    this.setState({ pastClickId });
-    if (friend.id !== this.state.pastClickId) {
+
+    if (this.state.pastClickId.length === 0) {
       let score = this.state.score + 1;
       this.setState({ score });
-    } else {
-      console.log("game over");
-      let animateClass = "wrapper animated shake";
-      this.setState({ animateClass });
-      if (this.state.score > this.state.topScore) {
-        let topScore = this.state.score;
-        this.setState({ topScore });
-      }
+      const pastClickId = [...this.state.pastClickId];
+      pastClickId.push(friend.id);
+      this.setState({ pastClickId });
+      console.log("In shuffle function: " + this.state.pastClickId);
+    } else this.trackClicks(friend.id);
 
-      let score = 0;
-      this.setState({ score });
-    }
+    // let animateClass = "wrapper";
+    // this.setState({ animateClass });
+    // let pastClickId = [];
+    // pastClickId = pastClickId.push(friend.id);
+    // console.log(pastClickId);
+
+    // this.setState({ pastClickId });
+
+    // if (!this.state.pastClickId.indexOf(friend.id)) {
+    //   let score = this.state.score + 1;
+    //   this.setState({ score });
+    // } else {
+    //   console.log("game over");
+    //   let animateClass = "wrapper animated shake";
+    //   this.setState({ animateClass });
+    //   if (this.state.score > this.state.topScore) {
+    //     let topScore = this.state.score;
+    //     this.setState({ topScore });
+    //   }
+
+    //   let score = 0;
+    //   this.setState({ score });
+    // }
   };
 
   render() {
     return (
       <Wrapper animateClass={this.state.animateClass}>
-        <Title
-          score={this.state.score}
-          topscore={this.state.topScore}
-          pastClickId={this.state.pastClickId}
-        >
+        <Title score={this.state.score} topscore={this.state.topScore}>
           Clicky Game
         </Title>
         {/* {this.shuffleArray(this.state.friends)} */}
