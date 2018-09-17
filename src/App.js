@@ -15,13 +15,6 @@ class App extends Component {
     animateClass: "wrapper"
   };
 
-  // removeFriend = id => {
-
-  //   const friends = this.state.friends.filter(friend => friend.id !== id);
-
-  //   this.setState({ friends });
-  // };
-
   trackClicks = id => {
     const pastClickId = [...this.state.pastClickId];
     pastClickId.push(id);
@@ -68,30 +61,6 @@ class App extends Component {
       this.setState({ pastClickId });
       console.log("In shuffle function: " + this.state.pastClickId);
     } else this.trackClicks(friend.id);
-
-    // let animateClass = "wrapper";
-    // this.setState({ animateClass });
-    // let pastClickId = [];
-    // pastClickId = pastClickId.push(friend.id);
-    // console.log(pastClickId);
-
-    // this.setState({ pastClickId });
-
-    // if (!this.state.pastClickId.indexOf(friend.id)) {
-    //   let score = this.state.score + 1;
-    //   this.setState({ score });
-    // } else {
-    //   console.log("game over");
-    //   let animateClass = "wrapper animated shake";
-    //   this.setState({ animateClass });
-    //   if (this.state.score > this.state.topScore) {
-    //     let topScore = this.state.score;
-    //     this.setState({ topScore });
-    //   }
-
-    //   let score = 0;
-    //   this.setState({ score });
-    // }
   };
 
   render() {
